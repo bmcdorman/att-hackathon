@@ -7,7 +7,7 @@ var mongoose = require('mongoose'),
 var TicketSchema = new Schema({
   lead_id: {type: ObjectId, require: true, trim: true},
   user_id: {type: ObjectId, require: true, trim: true},
-  status: {type: Number, default: 0},
+  status: {type: Number, default: 1},
   open: {type: Boolean, default: true}
 });
 

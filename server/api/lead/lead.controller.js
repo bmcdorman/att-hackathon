@@ -24,20 +24,17 @@ exports.show = function(req, res) {
 // Creates a new lead in the DB.
 exports.create = function(req, res) {
     var url = 'https://ebm:canigetamap@vm032064181085.attcompute.com/EBM/API/v84/ValidateAddress.php?street='+req.body.street+'&city='+req.body.city+'&zipCode='+req.body.zipCode;
+
     request.get(url,{'rejectUnauthorized':false}, function (err, httpResponse, body){
       if (err) {return handleError(res, err);}
-      console.log(body);
-      var body = JSON.parse(body);
-      var addressed_parsed = body['AddressServiceAvailability'];
-
+      var addressed_parsed = JSON.parse(body)['AddressServiceAvailability'];
       if (addressed_parsed.statusCode != null)
       {
         req.body.street = addressed_parsed.AddressMatchDetails.street;
         req.body.city = addressed_parsed.AddressMatchDetails.city;
         req.body.zipCode = addressed_parsed.AddressMatchDetails.Zip.zipCode;
         req.body.verified_VASA = true;
-        console.log(body);
-
+        req.body.availible_services = JSON.stringify(addressed_parsed.ServiceAvailabilityDetails.Ethernet.Service);
       }
       Lead.create(req.body, function(err, lead) {
         if(err) { return handleError(res, err); }
