@@ -12,17 +12,18 @@ exports.index = function(req, res) {
   });
 };
 
-// Get quotes associated with a ticker
-exports.index = function(req, res) {
-  Quote.find(function (err, quotes) {
+// Get a single quote
+exports.show = function(req, res) {
+  Quote.findById(req.params.id, function (err, quote) {
     if(err) { return handleError(res, err); }
-    return res.json(200, quotes);
+    if(!quote) { return res.send(404); }
+    return res.json(quote);
   });
 };
 
 // Get a single quote
-exports.show = function(req, res) {
-  Quote.findById(req.params.id, function (err, quote) {
+exports.byTicket = function(req, res) {
+  Quote.find({'ticket_id':ObjectId(req.params.id)}, function (err, quote) {
     if(err) { return handleError(res, err); }
     if(!quote) { return res.send(404); }
     return res.json(quote);
