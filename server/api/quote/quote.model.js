@@ -8,8 +8,6 @@ var QuoteSchema = new Schema({
   ticket_id: {type: ObjectId, require: true, trim: true},
   std_price: {type: Number, trim: true},
   given_price: {type: Number, trim: true},
-  current_services: {type: String, trim: true},
-  competitors: {type: String, trim: true},
   service: {type: String, trim: true}
 });
 

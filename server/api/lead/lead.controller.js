@@ -2,6 +2,7 @@
 
 var _ = require('lodash');
 var Lead = require('./lead.model');
+var request = require('request');
 
 // Get list of leads
 exports.index = function(req, res) {
@@ -22,9 +23,26 @@ exports.show = function(req, res) {
 
 // Creates a new lead in the DB.
 exports.create = function(req, res) {
-  Lead.create(req.body, function(err, lead) {
-    if(err) { return handleError(res, err); }
-    return res.json(201, lead);
+    var url = 'https://ebm:canigetamap@vm032064181085.attcompute.com/EBM/API/v84/ValidateAddress.php?street='+req.body.street+'&city='+req.body.city+'&zipCode='+req.body.zipCode;
+    request.get(url,{'rejectUnauthorized':false}, function (err, httpResponse, body){
+      if (err) {return handleError(res, err);}
+      console.log(body);
+      var body = JSON.parse(body);
+      var addressed_parsed = body['AddressServiceAvailability'];
+
+      if (addressed_parsed.statusCode != null)
+      {
+        req.body.street = addressed_parsed.AddressMatchDetails.street;
+        req.body.city = addressed_parsed.AddressMatchDetails.city;
+        req.body.zipCode = addressed_parsed.AddressMatchDetails.Zip.zipCode;
+        req.body.verified_VASA = true;
+        console.log(body);
+
+      }
+      Lead.create(req.body, function(err, lead) {
+        if(err) { return handleError(res, err); }
+        return res.json(201, lead);
+      });
   });
 };
 
@@ -57,3 +75,7 @@ exports.destroy = function(req, res) {
 function handleError(res, err) {
   return res.send(500, err);
 }
+
+// var str = Object.keys(obj).map(function(key){ 
+//   return encodeURIComponent(key) + '=' + encodeURIComponent(obj[key]); 
+// }).join('&');
