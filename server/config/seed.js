@@ -28,14 +28,13 @@ var Quote = require('../api/quote/quote.model');
 //   );
 // });
 
-Ticket.find({}, function(err, f) {
-  console.log(f);
-});
+// Ticket.find({}, function(err, f) {
+//   console.log(f);
+// });
 
-
-// Ticket.find({}).remove();
-// Lead.find({}).remove();
-// Quote.find({}).remove();
+// Ticket.find({}).remove(function(){});
+// Lead.find({}).remove(function(){});
+// Quote.find({}).remove(function(){});
 
 // User.findOne({email: 'nikhil@ou.edu'}, function (err, user) {
 //   Lead.create({

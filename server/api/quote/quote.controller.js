@@ -23,7 +23,7 @@ exports.show = function(req, res) {
 
 // Get a single quote
 exports.byTicket = function(req, res) {
-  Quote.find({'ticket_id':ObjectId(req.params.id)}, function (err, quote) {
+  Quote.find({'ticket_id': req.params.id}, function (err, quote) {
     if(err) { return handleError(res, err); }
     if(!quote) { return res.send(404); }
     return res.json(quote);

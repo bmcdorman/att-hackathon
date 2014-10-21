@@ -1,2 +1,22 @@
 <div ng-include="'components/navbar/navbar.html'"></div>
 
+<div class="container">
+	<div class="row">
+		<div class="col-md-10">
+			<h1>Tickets</h1>
+		</div>
+		<div class="col-md-2">
+			<button style="margin: 10px auto;" type="button" class="btn btn-primary btn-lg btn-block">Create New</button>
+		</div>
+	</div>
+	<div class="row">
+		<div class="col-md-12">
+			<ul class="list-group">
+				<li class="list-group-item ticket-item" ng-repeat="ticket in tickets" ng-click="go('/ticket/' + ticket._id)">
+					<h1>{{ticket.lead.name}} <span ng-if="ticket.lead.verified" class="label label-success">Verified</span></h1>
+					<h4 ng-repeat="quote in ticket.quotes">{{quote.service}} - ${{quote.given_price}}</h4>
+				</li>
+			</ul>
+		</div>
+	</div>
+</div>
