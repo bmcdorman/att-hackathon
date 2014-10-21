@@ -12,7 +12,6 @@ module.exports = function(app) {
   app.use('/api/tickets', require('./api/ticket'));
   app.use('/api/quotes', require('./api/quote'));
   app.use('/api/leads', require('./api/lead'));
-  app.use('/api/things', require('./api/thing'));
   app.use('/api/users', require('./api/user'));
 
   app.use('/auth', require('./auth'));
