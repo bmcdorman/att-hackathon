@@ -1,6 +1,6 @@
 'use strict';
 
 angular.module('attApp')
-  .controller('MainCtrl', function ($scope) {
-    $scope.message = 'Hello';
+  .controller('MainCtrl', function ($scope, Auth) {
+    console.log(Auth.getCurrentUser());
   });
