@@ -23,17 +23,29 @@
 			    <input type="text" ng-disabled="!ticket.open" class="form-control" id="lead-name" placeholder="Lead name" ng-model="lead.name">
 			  </div>
 			  <div class="form-group">
-			    <label for="lead-address">Address</label>
-			    <input type="text" ng-disabled="!ticket.open" class="form-control" id="lead-address" placeholder="Address" ng-model="lead.address">
+			    <label for="lead-address">Street Address</label>
+			    <input type="text" ng-disabled="!ticket.open" class="form-control" id="lead-address" placeholder="Street Address" ng-model="lead.street">
+			  </div>
+			  <div class="form-group">
+			    <label for="lead-city">City</label>
+			    <input type="text" ng-disabled="!ticket.open" class="form-control" id="lead-city" placeholder="City" ng-model="lead.city">
+			  </div>
+			  <div class="form-group">
+			    <label for="lead-zip">Zip Code</label>
+			    <input type="text" ng-disabled="!ticket.open" class="form-control" id="lead-zip" placeholder="Zip Code" ng-model="lead.zipCode">
 			  </div>
 			  <div class="form-group">
 			    <label for="lead-phone">Phone Number</label>
 			    <input type="tel" ng-disabled="!ticket.open" class="form-control" id="lead-phone" placeholder="Phone Number" ng-model="lead.phone">
 			  </div>
-			  <div class="checkbox">
-			    <label>
-			      <input type="checkbox" ng-disabled="!ticket.open" ng-model="lead.verified"> Verified
-			    </label>
+			  <hr/>
+			  <div class="form-group">
+			    <label for="lead-current">Current Services</label>
+			    <input type="text" ng-disabled="!ticket.open" class="form-control" id="lead-current" placeholder="Current Services" ng-model="lead.available_services">
+			  </div>
+			  <div class="form-group">
+			    <label for="lead-competitors">Competing Services</label>
+			    <input type="text" ng-disabled="!ticket.open" class="form-control" id="lead-competitors" placeholder="Competing Services" ng-model="lead.competitor_services">
 			  </div>
 			</div>
 			<div ng-switch-when="2">
