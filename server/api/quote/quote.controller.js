@@ -3,6 +3,7 @@
 var _ = require('lodash');
 var Quote = require('./quote.model');
 var Ticket = require('../ticket/ticket.model');
+var mongoose = require('mongoose');
 
 // Get list of quotes
 exports.index = function(req, res) {
@@ -23,7 +24,7 @@ exports.show = function(req, res) {
 
 // Get a single quote
 exports.byTicket = function(req, res) {
-  Quote.find({'ticket_id':ObjectId(req.params.id)}, function (err, quote) {
+  Quote.find({'ticket_id': mongoose.Schema.ObjectId(req.params.ticket_id)}, function (err, quote) {
     if(err) { return handleError(res, err); }
     if(!quote) { return res.send(404); }
     return res.json(quote);
