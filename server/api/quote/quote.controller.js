@@ -2,8 +2,17 @@
 
 var _ = require('lodash');
 var Quote = require('./quote.model');
+var Ticket = require('../ticket/ticket.model');
 
 // Get list of quotes
+exports.index = function(req, res) {
+  Quote.find(function (err, quotes) {
+    if(err) { return handleError(res, err); }
+    return res.json(200, quotes);
+  });
+};
+
+// Get quotes associated with a ticker
 exports.index = function(req, res) {
   Quote.find(function (err, quotes) {
     if(err) { return handleError(res, err); }
