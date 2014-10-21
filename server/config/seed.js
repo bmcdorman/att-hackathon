@@ -5,8 +5,8 @@
 
 'use strict';
 
-// var User = require('../api/user/user.model');
-
+var User = require('../api/user/user.model');
+var Ticket = require('../api/ticket/ticket.model');
 // User.find({}).remove(function() {
 //   User.create({
 //     provider: 'local',
@@ -24,3 +24,7 @@
 //     }
 //   );
 // });
+
+User.find({email: 'nikhil@ou.edu'}, function(err, user) {
+  console.log(user[0]._id);
+});
