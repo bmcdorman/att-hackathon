@@ -1,53 +1,53 @@
 'use strict';
 
 var _ = require('lodash');
-var Qoute = require('./qoute.model');
+var Quote = require('./quote.model');
 
-// Get list of qoutes
+// Get list of quotes
 exports.index = function(req, res) {
-  Qoute.find(function (err, qoutes) {
+  Quote.find(function (err, quotes) {
     if(err) { return handleError(res, err); }
-    return res.json(200, qoutes);
+    return res.json(200, quotes);
   });
 };
 
-// Get a single qoute
+// Get a single quote
 exports.show = function(req, res) {
-  Qoute.findById(req.params.id, function (err, qoute) {
+  Quote.findById(req.params.id, function (err, quote) {
     if(err) { return handleError(res, err); }
-    if(!qoute) { return res.send(404); }
-    return res.json(qoute);
+    if(!quote) { return res.send(404); }
+    return res.json(quote);
   });
 };
 
-// Creates a new qoute in the DB.
+// Creates a new quote in the DB.
 exports.create = function(req, res) {
-  Qoute.create(req.body, function(err, qoute) {
+  Quote.create(req.body, function(err, quote) {
     if(err) { return handleError(res, err); }
-    return res.json(201, qoute);
+    return res.json(201, quote);
   });
 };
 
-// Updates an existing qoute in the DB.
+// Updates an existing quote in the DB.
 exports.update = function(req, res) {
   if(req.body._id) { delete req.body._id; }
-  Qoute.findById(req.params.id, function (err, qoute) {
+  Quote.findById(req.params.id, function (err, quote) {
     if (err) { return handleError(res, err); }
-    if(!qoute) { return res.send(404); }
-    var updated = _.merge(qoute, req.body);
+    if(!quote) { return res.send(404); }
+    var updated = _.merge(quote, req.body);
     updated.save(function (err) {
       if (err) { return handleError(res, err); }
-      return res.json(200, qoute);
+      return res.json(200, quote);
     });
   });
 };
 
-// Deletes a qoute from the DB.
+// Deletes a quote from the DB.
 exports.destroy = function(req, res) {
-  Qoute.findById(req.params.id, function (err, qoute) {
+  Quote.findById(req.params.id, function (err, quote) {
     if(err) { return handleError(res, err); }
-    if(!qoute) { return res.send(404); }
-    qoute.remove(function(err) {
+    if(!quote) { return res.send(404); }
+    quote.remove(function(err) {
       if(err) { return handleError(res, err); }
       return res.send(204);
     });

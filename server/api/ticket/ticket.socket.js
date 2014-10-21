@@ -4,21 +4,21 @@
 
 'use strict';
 
-var Ticekt = require('./ticekt.model');
+var Ticket = require('./ticket.model');
 
 exports.register = function(socket) {
-  Ticekt.schema.post('save', function (doc) {
+  Ticket.schema.post('save', function (doc) {
     onSave(socket, doc);
   });
-  Ticekt.schema.post('remove', function (doc) {
+  Ticket.schema.post('remove', function (doc) {
     onRemove(socket, doc);
   });
 }
 
 function onSave(socket, doc, cb) {
-  socket.emit('ticekt:save', doc);
+  socket.emit('ticket:save', doc);
 }
 
 function onRemove(socket, doc, cb) {
-  socket.emit('ticekt:remove', doc);
+  socket.emit('ticket:remove', doc);
 }

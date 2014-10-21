@@ -4,7 +4,7 @@ var mongoose = require('mongoose'),
     Schema = mongoose.Schema,
 	ObjectId = Schema.ObjectId;
 
-var QouteSchema = new Schema({
+var QuoteSchema = new Schema({
   ticket_id: {type: ObjectId, require: true, trim: true},
   std_price: {type: Number, trim: true},
   given_price: {type: Number, trim: true},
@@ -13,4 +13,4 @@ var QouteSchema = new Schema({
   service: {type: String, trim: true}
 });
 
-module.exports = mongoose.model('Qoute', QouteSchema);
+module.exports = mongoose.model('Quote', QuoteSchema);
