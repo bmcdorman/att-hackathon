@@ -1,0 +1,38 @@
+<div ng-include="'components/navbar/navbar.html'"></div>
+
+<div class="container">
+	<div class="row">
+		<div class="col-md-12">
+			<div class="form-group">
+				<label for="lead-name">Lead Name</label>
+				<input type="text" class="form-control" id="lead-name" placeholder="Lead name" ng-model="lead.name">
+			</div>
+			<div class="form-group">
+				<label for="lead-address">Street Address</label>
+				<input type="text" class="form-control" id="lead-address" placeholder="Street Address" ng-model="lead.street">
+			</div>
+			<div class="form-group">
+				<label for="lead-city">City</label>
+				<input type="text" class="form-control" id="lead-city" placeholder="City" ng-model="lead.city">
+			</div>
+			<div class="form-group">
+				<label for="lead-zip">Zip Code</label>
+				<input type="text" class="form-control" id="lead-zip" placeholder="Zip Code" ng-model="lead.zipCode">
+			</div>
+			<div class="form-group">
+				<label for="lead-phone">Phone Number</label>
+				<input type="tel" class="form-control" id="lead-phone" placeholder="Phone Number" ng-model="lead.phone">
+			</div>
+			<div class="form-group">
+				<label for="lead-current">Current Services</label>
+				<input type="text" class="form-control" id="lead-current" placeholder="Current Services" ng-model="lead.current_services">
+			</div>
+			<div class="form-group">
+				<label for="lead-competitors">Competing Services</label>
+				<input type="text" class="form-control" id="lead-competitors" placeholder="Competing Services" ng-model="lead.competitor_services">
+			</div>	
+			<button ng-click="submit('lead')" class="btn btn-default">Save and Create New Lead</button>
+			<button ng-click="newTicket('ticket')" class="btn btn-primary">Save and Create Ticket</button>
+		</div>
+	</div>
+</div>

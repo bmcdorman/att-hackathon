@@ -11,6 +11,7 @@ var LeadSchema = new Schema({
   city: {type: String, trim: true},
   zipCode: {type: String, trim: true},
   available_services: {type: String, trim: true, default:''},
+  current_services: {type: String, trim: true, default:''},
   competitor_services: {type: String, trim: true, default:''},
   verified_gps: {type: Boolean, trim: true, default:false},
   verified_call: {type: Boolean, trim: true, default:false},

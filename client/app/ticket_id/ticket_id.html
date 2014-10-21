@@ -5,15 +5,15 @@
 		<div class="col-md-12" ng-switch="ticket.status">
 			<h1>Lead Editor</h1>
 			<ul class="list-inline">
-			  <li><span ng-class="(ticket.status == 1 ? 'label label-success' : null)">Verify Lead</span></li>
+			  <li><span ng-click="ticket.status = 1" ng-class="(ticket.status == 1 ? 'label label-success' : null)">Verify Lead</span></li>
 			  <li><span class="glyphicon glyphicon-chevron-right"></span></li>
-			  <li><span ng-class="(ticket.status == 2 ? 'label label-success' : null)">Finalize Quotes</span></li>
+			  <li><span ng-click="ticket.status = 2" ng-class="(ticket.status == 2 ? 'label label-success' : null)">Finalize Quotes</span></li>
 			  <li><span class="glyphicon glyphicon-chevron-right"></span></li>
-			  <li><span ng-class="(ticket.status == 3 ? 'label label-success' : null)">Quote Summary</span></li>
+			  <li><span ng-click="ticket.status = 3" ng-class="(ticket.status == 3 ? 'label label-success' : null)">Quote Approval</span></li>
 			  <li><span class="glyphicon glyphicon-chevron-right"></span></li>
-			  <li><span ng-class="(ticket.status == 4 ? 'label label-success' : null)">Other Stuff</span></li>
+			  <li><span ng-click="ticket.status = 4" ng-class="(ticket.status == 4 ? 'label label-success' : null)">Deliver Quotes</span></li>
 			  <li><span class="glyphicon glyphicon-chevron-right"></span></li>
-			  <li><span ng-class="(ticket.status == 5 ? 'label label-success' : null)">More Stuff</span></li>
+			  <li><span ng-click="ticket.status = 5" ng-class="(ticket.status == 5 ? 'label label-success' : null)">Finalize Contract</span></li>
 			</ul>
 			<progressbar max="5" value="ticket.status" type="success"></progressbar>
 			<div ng-switch-when="1">
@@ -21,34 +21,27 @@
 			  	Verify Lead
 			    <span class="label pull-right" ng-class="(lead.verified_VASA ? 'label-success' : 'label-default')">{{lead.verified_VASA ? 'VASA Approved' : 'VASA Approval Pending'}}</span></h3>  	
 			  </h3>
-			  <div class="form-group">
-			    <label for="lead-name">Lead Name</label>
-			    <input type="text" ng-disabled="!ticket.open" class="form-control" id="lead-name" placeholder="Lead name" ng-model="lead.name">
-			  </div>
-			  <div class="form-group">
-			    <label for="lead-address">Street Address</label>
-			    <input type="text" ng-disabled="!ticket.open" class="form-control" id="lead-address" placeholder="Street Address" ng-model="lead.street">
-			  </div>
-			  <div class="form-group">
-			    <label for="lead-city">City</label>
-			    <input type="text" ng-disabled="!ticket.open" class="form-control" id="lead-city" placeholder="City" ng-model="lead.city">
-			  </div>
-			  <div class="form-group">
-			    <label for="lead-zip">Zip Code</label>
-			    <input type="text" ng-disabled="!ticket.open" class="form-control" id="lead-zip" placeholder="Zip Code" ng-model="lead.zipCode">
-			  </div>
-			  <div class="form-group">
-			    <label for="lead-phone">Phone Number</label>
-			    <input type="tel" ng-disabled="!ticket.open" class="form-control" id="lead-phone" placeholder="Phone Number" ng-model="lead.phone">
-			  </div>
-			  <div class="form-group">
-			    <label for="lead-current">Current Services</label>
-			    <input type="text" ng-disabled="!ticket.open" class="form-control" id="lead-current" placeholder="Current Services" ng-model="lead.available_services">
-			  </div>
-			  <div class="form-group">
-			    <label for="lead-competitors">Competing Services</label>
-			    <input type="text" ng-disabled="!ticket.open" class="form-control" id="lead-competitors" placeholder="Competing Services" ng-model="lead.competitor_services">
-			  </div>
+			  <input type="text" ng-model="selected" typeahead-on-select="setLead($item)" typeahead="lead as lead.name for lead in leads | filter:$viewValue | limitTo:8" class="form-control"><br>
+			  <div ng-if="lead" class="well well-lg">
+					<dl class="dl-horizontal">
+						<dt ng-if="lead.name">Name</dt>
+					  	<dd>{{lead.name}}</dd>
+						<dt ng-if="lead.street">Address</dt>
+				  		<dd>{{lead.street}}</dd>
+				  		<dt ng-if="lead.city">City</dt>
+					  	<dd>{{lead.city}}</dd>
+					  	<dt ng-if="lead.zipCode">Zip Code</dt>
+					  	<dd>{{lead.zipCode}}</dd>
+						<dt ng-if="lead.phone">Phone</dt>
+				  		<dd>{{lead.phone}}</dd>
+					  	<dt ng-if="lead.available_services">Available Services</dt>
+					  	<dd>{{lead.available_services}}</dd>
+					  	<dt ng-if="lead.current_services">Current Services</dt>
+					  	<dd>{{lead.current_services}}</dd>
+						<dt ng-if="lead.competitor_services">Competing Services</dt>
+				  		<dd>{{lead.competitor_services}}</dd>
+					</dl>
+				</div>
 			  <div class="checkbox">
 			    <label>
 			      <input type="checkbox" ng-disabled="!ticket.open" ng-model="lead.verified_call"> Verified by call
@@ -56,12 +49,28 @@
 			  </div>
 			  <div class="checkbox">
 			    <label>
-			      <input type="checkbox" ng-disabled="!ticket.open" ng-model="lead.verified_GPS"> Verified by GPS
+			      <input type="checkbox" ng-disabled="!ticket.open" ng-model="lead.verified_gps"> Verified by GPS
 			    </label>
 			  </div>
+			  	<button ng-click="decrement()" class="btn btn-primary" ng-if="(ticket.status > 1)">Back</button> 
+				<button ng-click="newQuote()" ng-disabled="!ticket.open" class="btn btn-info" ng-if="(ticket.status == 2)">New Quote</button> 
+			  	<button ng-click="ticket.open = !ticket.open" class="btn btn-default">
+			  		{{(ticket.open ? 'Freeze ' : 'Open')}} Ticket
+		  		</button>
+		  		<button ng-click="increment()" ng-disabled="(!lead || !(lead.verified_gps || lead.verified_call))" class="btn btn-primary" ng-if="(ticket.status < 5)">Next</button> 
 			</div>
 			<div ng-switch-when="2">
-			  	<h3>Finalize Quotes</h3>				  
+			  	<h3>Finalize Quotes</h3>
+			  	<div class="well well-lg">
+					<dl class="dl-horizontal">
+					  	<dt>Available Services</dt>
+					  	<dd>{{lead.available_services}}</dd>
+					  	<dt>Current Services</dt>
+					  	<dd>{{lead.current_services}}</dd>
+						<dt>Competing Services</dt>
+				  		<dd>{{lead.competitor_services}}</dd>
+					</dl>
+				</div>				  
 			  	<accordion close-others="true">
 				    <accordion-group ng-repeat="quote in quotes" heading="{{quote.service}} - ${{quote.given_price}}">
 					    <form class="form-horizontal" role="form">
@@ -92,21 +101,29 @@
 					 	</form>
 				    </accordion-group>
 			  	</accordion>
+			  	<button ng-click="decrement()" class="btn btn-primary" ng-if="(ticket.status > 1)">Back</button> 
+				<button ng-click="newQuote()" ng-disabled="!ticket.open" class="btn btn-info" ng-if="(ticket.status == 2)">New Quote</button> 
+			  	<button ng-click="ticket.open = !ticket.open" class="btn btn-default">
+			  		{{(ticket.open ? 'Freeze ' : 'Open')}} Ticket
+		  		</button>
+		  		<button ng-click="increment()" ng-disabled="(quotes.length == 0)" class="btn btn-primary" ng-if="(ticket.status < 5)">Next</button> 
 			</div>
 			<div ng-switch-when="3">
-				<h1>Quote Summary</h1>
+				<h1>Quote Approval</h1>
 				<div class="well well-lg">
 					<dl class="dl-horizontal">
-					  	<dt>Current Services</dt>
+					  	<dt ng-if="lead.available_services">Available Services</dt>
 					  	<dd>{{lead.available_services}}</dd>
-						<dt>Competing Services</dt>
+					  	<dt ng-if="lead.current_services">Current Services</dt>
+					  	<dd>{{lead.current_services}}</dd>
+						<dt ng-if="lead.competitor_services">Competing Services</dt>
 				  		<dd>{{lead.competitor_services}}</dd>
 					</dl>
 				</div>
 				<div class="panel panel-default" ng-repeat="quote in quotes">
 				  <div class="panel-heading">
 				    <h3 class="panel-title">Quote #{{$index + 1}}
-				    <span class="label pull-right" ng-class="(quote.approved ? 'label-success' : 'label-default')">{{quote.approved ? 'Approved' : 'Approval Pending'}}</span></h3>
+				    <span class="label pull-right" ng-click="quote.approved = !quote.approved" ng-class="(quote.approved ? 'label-success' : 'label-default')">{{quote.approved ? 'Approved' : 'Approval Pending'}}</span></h3>
 				  </div>
 				  <div class="panel-body">
 				    <dl class="dl-horizontal">
@@ -119,13 +136,105 @@
 					</dl>
 				  </div>
 				</div>
+				<button ng-click="decrement()" class="btn btn-primary" ng-if="(ticket.status > 1)">Back</button> 
+				<button ng-click="newQuote()" ng-disabled="!ticket.open" class="btn btn-info" ng-if="(ticket.status == 2)">New Quote</button> 
+			  	<button ng-click="ticket.open = !ticket.open" class="btn btn-default">
+			  		{{(ticket.open ? 'Freeze ' : 'Open')}} Ticket
+		  		</button>
+		  		<button ng-click="increment()" ng-disabled="pendingApproval()" class="btn btn-primary" ng-if="(ticket.status < 5)">Next</button> 
 			</div>
-			<button ng-click="decrement()" class="btn btn-primary" ng-if="(ticket.status > 1)">Back</button> 
-			<button ng-click="newQuote()" ng-disabled="!ticket.open" class="btn btn-info" ng-if="(ticket.status == 2)">New Quote</button> 
-		  	<button ng-click="ticket.open = !ticket.open" class="btn btn-default">
-		  		{{(ticket.open ? 'Freeze ' : 'Open')}} Ticket
-	  		</button>
-	  		<button ng-click="increment()" class="btn btn-primary" ng-if="(ticket.status < 5)">Next</button> 
+			<div ng-switch-when="4">
+				<h1>Quote Approval</h1>
+				<div class="well well-lg">
+					<dl class="dl-horizontal">
+					  	<dt ng-if="lead.available_services">Available Services</dt>
+					  	<dd>{{lead.available_services}}</dd>
+					  	<dt ng-if="lead.current_services">Current Services</dt>
+					  	<dd>{{lead.current_services}}</dd>
+						<dt ng-if="lead.competitor_services">Competing Services</dt>
+				  		<dd>{{lead.competitor_services}}</dd>
+					</dl>
+				</div>
+				<div class="panel panel-default" ng-if="quote.approved" ng-repeat="quote in quotes">
+				  <div class="panel-heading">
+				    <h3 class="panel-title">Quote #{{$index + 1}}
+				    <span class="label pull-right" ng-click="quote.accepted = !quote.accepted" ng-class="(quote.accepted ? 'label-success' : 'label-default')">{{quote.accepted ? 'Accepted' : 'Acceptance Pending'}}</span></h3>
+				  </div>
+				  <div class="panel-body">
+				    <dl class="dl-horizontal">
+  					  <dt>Proposed Services</dt>
+					  <dd>{{quote.service}}</dd>
+					  <dt>Standard Price</dt>
+					  <dd>{{quote.std_price}}</dd>
+					  <dt>Proposed Price</dt>
+					  <dd>{{quote.given_price}}</dd>
+					</dl>
+					<h5>Quotes Submitted</h5>
+					  <ul class="list-group">
+					  	<li class="list-group-item" ng-if="quote.followup0">
+					  		Request #1 - {{quote.followup0 | date }}
+					  	</li>
+					  	<li class="list-group-item" ng-if="quote.followup1">
+					  		Request #2 - {{quote.followup1 | date }}
+					  	</li>
+					  	<li class="list-group-item" ng-if="quote.followup2">
+					  		Request #3 - {{quote.followup2 | date }}
+					  	</li>
+					  	<li class="list-group-item" ng-if="quote.followup3">
+					  		Request #4 - {{quote.followup3 | date }}
+					  	</li>
+					  	<li class="list-group-item" ng-if="quote.followup4">
+					  		Request #5 - {{quote.followup4 | date }}
+					  	</li>
+					  	<li class="list-group-item" ng-if="quote.acceptanceDate">
+					  		Accepted on {{quote.acceptanceDate | date }}
+					  	</li><br>
+				  		<input type="date" ng-model="quote.date">
+						<button ng-click="addDate(quote, quote.followupIndex)" class="btn btn-default">Follow-Up</button>
+						<button ng-click="accept(quote, quote.followupIndex)" class="btn btn-primary">Quote Accepted</button>
+					  </ul>
+				  </div>
+				</div>
+				<button ng-click="decrement()" class="btn btn-primary" ng-if="(ticket.status > 1)">Back</button> 
+				<button ng-click="newQuote()" ng-disabled="!ticket.open" class="btn btn-info" ng-if="(ticket.status == 2)">New Quote</button> 
+			  	<button ng-click="ticket.open = !ticket.open" class="btn btn-default">
+			  		{{(ticket.open ? 'Freeze ' : 'Open')}} Ticket
+		  		</button>
+		  		<button ng-click="increment()" ng-disabled="pendingApproval()" class="btn btn-primary" ng-if="(ticket.status < 5)">Next</button> 
+			</div>
+			<div ng-switch-when="5">
+				<h1>Finalize Contract</h1>
+				<div ng-if="quote.accepted" ng-repeat="quote in quotes">
+					<div class="well well-lg" >
+						<dl class="dl-horizontal">
+							<dt ng-if="lead.name">Name</dt>
+						  	<dd>{{lead.name}}</dd>
+							<dt ng-if="lead.street">Address</dt>
+					  		<dd>{{lead.street}}</dd>
+					  		<dt ng-if="lead.city">City</dt>
+						  	<dd>{{lead.city}}</dd>
+						  	<dt ng-if="lead.zipCode">Zip Code</dt>
+						  	<dd>{{lead.zipCode}}</dd>
+							<dt ng-if="lead.phone">Phone</dt>
+					  		<dd>{{lead.phone}}</dd><br>
+						  	<dt ng-if="lead.available_services">Available Services</dt>
+						  	<dd>{{lead.available_services}}</dd>
+						  	<dt ng-if="lead.current_services">Current Services</dt>
+						  	<dd>{{lead.current_services}}</dd>
+							<dt ng-if="lead.competitor_services">Competing Services</dt>
+					  		<dd>{{lead.competitor_services}}</dd><br>
+					  		<dt>Proposed Services</dt>
+						  	<dd>{{quote.service}}</dd>
+						  	<dt>Standard Price</dt>
+						  	<dd>{{quote.std_price}}</dd>
+						  	<dt>Proposed Price</dt>
+						  	<dd>{{quote.given_price}}</dd>
+						</dl>
+					</div>
+					Finalized on <input type="date" ng-model="quote.date">
+					<button ng-click="finalize(quote)" class="btn btn-primary">Finalize</button>
+				</div>
+			</div>
 		</div>
 	</div>
 </div>

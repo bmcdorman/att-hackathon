@@ -11,7 +11,15 @@ var QuoteSchema = new Schema({
   approved: {type: Boolean, trim: true, default:false},
   accepted: {type: Boolean, trim: true, default:false},
   contracted: {type: Boolean, trim: true, default:false},
-  service: {type: String, trim: true}
+  service: {type: String, trim: true},
+  followup0: Date,
+  followup1: Date,
+  followup2: Date,
+  followup3: Date,
+  followup4: Date,
+  acceptanceDate: Date,
+  finalizeDate: Date,
+  followupIndex: {type: Number, default: 0}
 });
 
 module.exports = mongoose.model('Quote', QuoteSchema);
