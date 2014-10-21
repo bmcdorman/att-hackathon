@@ -17,7 +17,10 @@
 			</ul>
 			<progressbar max="5" value="ticket.status" type="success"></progressbar>
 			<div ng-switch-when="1">
-			  <h3>Verify Lead</h3>
+			  <h3>
+			  	Verify Lead
+			    <span class="label pull-right" ng-class="(lead.verified_VASA ? 'label-success' : 'label-default')">{{lead.verified_VASA ? 'VASA Approved' : 'VASA Approval Pending'}}</span></h3>  	
+			  </h3>
 			  <div class="form-group">
 			    <label for="lead-name">Lead Name</label>
 			    <input type="text" ng-disabled="!ticket.open" class="form-control" id="lead-name" placeholder="Lead name" ng-model="lead.name">
@@ -38,7 +41,6 @@
 			    <label for="lead-phone">Phone Number</label>
 			    <input type="tel" ng-disabled="!ticket.open" class="form-control" id="lead-phone" placeholder="Phone Number" ng-model="lead.phone">
 			  </div>
-			  <hr/>
 			  <div class="form-group">
 			    <label for="lead-current">Current Services</label>
 			    <input type="text" ng-disabled="!ticket.open" class="form-control" id="lead-current" placeholder="Current Services" ng-model="lead.available_services">
@@ -46,6 +48,16 @@
 			  <div class="form-group">
 			    <label for="lead-competitors">Competing Services</label>
 			    <input type="text" ng-disabled="!ticket.open" class="form-control" id="lead-competitors" placeholder="Competing Services" ng-model="lead.competitor_services">
+			  </div>
+			  <div class="checkbox">
+			    <label>
+			      <input type="checkbox" ng-disabled="!ticket.open" ng-model="lead.verified_call"> Verified by call
+			    </label>
+			  </div>
+			  <div class="checkbox">
+			    <label>
+			      <input type="checkbox" ng-disabled="!ticket.open" ng-model="lead.verified_GPS"> Verified by GPS
+			    </label>
 			  </div>
 			</div>
 			<div ng-switch-when="2">
@@ -93,7 +105,8 @@
 				</div>
 				<div class="panel panel-default" ng-repeat="quote in quotes">
 				  <div class="panel-heading">
-				    <h3 class="panel-title">Quote #{{$index + 1}}</h3>
+				    <h3 class="panel-title">Quote #{{$index + 1}}
+				    <span class="label pull-right" ng-class="(quote.approved ? 'label-success' : 'label-default')">{{quote.approved ? 'Approved' : 'Approval Pending'}}</span></h3>
 				  </div>
 				  <div class="panel-body">
 				    <dl class="dl-horizontal">

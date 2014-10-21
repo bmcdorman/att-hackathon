@@ -32,9 +32,9 @@ var Quote = require('../api/quote/quote.model');
 //   console.log(f);
 // });
 
-Ticket.find({}).remove(function() {});
-Lead.find({}).remove(function() {});
-Quote.find({}).remove(function() {});
+// Ticket.find({}).remove(function() {});
+// Lead.find({}).remove(function() {});
+// Quote.find({}).remove(function() {});
 
 User.findOne({
 	email: 'nikhil@ou.edu'
@@ -61,7 +61,7 @@ User.findOne({
 				ticket_id: ticket._id,
 				std_price: 1000,
 				given_price: 800,
-				verified: false,
+				approved: false,
 				service: "AVPN and MIS"
 			}, function(err, quote) {
 				console.log(user);
