@@ -7,20 +7,32 @@ angular.module('attApp')
     		$scope.ticket = value;
 			$http.get('/api/leads/' + value.lead_id)
 				.success(function (lead) {
-					value.lead = lead;
+					$scope.lead = lead;
     				});
 			$http.get('/api/quotes/ticket/' + value._id)
 				.success(function (quotes) {
-					value.quotes = quotes;
+					$scope.quotes = quotes;
 				});
-			console.log(value);
     	});
-    $scope.increment = function() {$scope.ticket.status += 1};
-    $scope.decrement = function() {$scope.ticket.status -= 1};
+    $scope.increment = function() {$scope.ticket.status += 1; save();};
+    $scope.decrement = function() {$scope.ticket.status -= 1; save();};
+    var save = function() {
+    	$http.put('/api/leads/' + $scope.lead._id, $scope.lead);
+    	$http.put('/api/tickets/' + $scope.ticket._id, $scope.ticket);
+    	$scope.quotes.forEach(function (quote) {
+    		$http.put('/api/quotes/' + quote._id, quote);
+    	})
+    }
     $scope.remove = function(array, index){
-	    array.splice(index, 1);
+	    $http.delete('/api/quotes/' + array.splice(index, 1)[0]._id)
+	    	.success(function (data) {
+	    		console.log(data);	
+	    	});
 	}
 	$scope.newQuote = function() {
-		$scope.ticket.quotes.push({service: "New Quote", given_price: 0})
+		$http.post('/api/quotes/', {ticket_id: $scope.ticket._id, service: "New Quote", given_price: 0}).success(function (data) {
+			console.log(data);
+			$scope.quotes.push(data)
+		});
 	}
   });
