@@ -34,7 +34,11 @@ exports.create = function(req, res) {
         req.body.city = addressed_parsed.AddressMatchDetails.city;
         req.body.zipCode = addressed_parsed.AddressMatchDetails.Zip.zipCode;
         req.body.verified_VASA = true;
-        req.body.availible_services = JSON.stringify(addressed_parsed.ServiceAvailabilityDetails.Ethernet.Service);
+        var available_services = '';
+        _.each(addressed_parsed.ServiceAvailabilityDetails.Ethernet.Service, function(i){
+          available_services += i.name + ', ' + i.switchedDedicated +' / ';
+        });
+        req.body.available_services = available_services;
       }
       Lead.create(req.body, function(err, lead) {
         if(err) { return handleError(res, err); }
@@ -50,9 +54,27 @@ exports.update = function(req, res) {
     if (err) { return handleError(res, err); }
     if(!lead) { return res.send(404); }
     var updated = _.merge(lead, req.body);
-    updated.save(function (err) {
-      if (err) { return handleError(res, err); }
-      return res.json(200, lead);
+    var url = 'https://ebm:canigetamap@vm032064181085.attcompute.com/EBM/API/v84/ValidateAddress.php?street='+updated.street+'&city='+updated.city+'&zipCode='+updated.zipCode;
+
+    request.get(url,{'rejectUnauthorized':false}, function (err, httpResponse, body){
+      if (err) {return handleError(res, err);}
+      var addressed_parsed = JSON.parse(body)['AddressServiceAvailability'];
+      if (addressed_parsed.statusCode != null)
+      {
+        updated.street = addressed_parsed.AddressMatchDetails.street;
+        updated.city = addressed_parsed.AddressMatchDetails.city;
+        updated.zipCode = addressed_parsed.AddressMatchDetails.Zip.zipCode;
+        updated.verified_VASA = true;
+        var available_services = '';
+        _.each(addressed_parsed.ServiceAvailabilityDetails.Ethernet.Service, function(i){
+          available_services += i.name + ', ' + i.switchedDedicated +' / ';
+        });
+        updated.available_services = available_services;
+      }
+      updated.save(function (err) {
+        if (err) { return handleError(res, err); }
+        return res.json(200, lead);
+      });
     });
   });
 };
