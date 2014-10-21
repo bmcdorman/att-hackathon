@@ -2,7 +2,6 @@
 
 var _ = require('lodash');
 var Ticket = require('./ticket.model');
-var mongoose = require('mongoose');
 
 // Get list of tickets
 exports.index = function(req, res) {
@@ -23,7 +22,7 @@ exports.show = function(req, res) {
 
 // Get a single ticket
 exports.byUser = function(req, res) {
-  Ticket.find({'user_id': mongoose.Schema.ObjectId(req.params.id)}, function (err, ticket) {
+  Ticket.find({'user_id': req.params.id}, function (err, ticket) {
     if(err) { return handleError(res, err); }
     if(!ticket) { return res.send(404); }
     return res.json(ticket);
