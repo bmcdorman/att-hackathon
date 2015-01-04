@@ -5,7 +5,7 @@
 module.exports = {
   // MongoDB connection options
   mongo: {
-    uri: 'mongodb://54.165.54.220/att'
+    uri: 'mongodb://localhost/att-hackathon-dev'
   },
 
   seedDB: true
