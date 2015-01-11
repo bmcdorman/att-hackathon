@@ -10,23 +10,23 @@ var Ticket = require('../api/ticket/ticket.model');
 var Lead = require('../api/lead/lead.model');
 var Quote = require('../api/quote/quote.model');
 
-// User.find({}).remove(function() {
-//   User.create({
-//     provider: 'local',
-//     name: 'Test User',
-//     email: 'test@test.com',
-//     password: 'test'
-//   }, {
-//     provider: 'local',
-//     role: 'admin',
-//     name: 'Admin',
-//     email: 'admin@admin.com',
-//     password: 'admin'
-//   }, function() {
-//       console.log('finished populating users');
-//     }
-//   );
-// });
+User.find({}).remove(function() {
+  User.create({
+    provider: 'local',
+    name: 'Test User',
+    email: 'test@test.com',
+    password: 'test'
+  }, {
+    provider: 'local',
+    role: 'admin',
+    name: 'Admin',
+    email: 'admin@admin.com',
+    password: 'admin'
+  }, function() {
+      console.log('finished populating users');
+    }
+  );
+});
 
 // Ticket.find({}, function(err, f) {
 //   console.log(f);
@@ -66,9 +66,9 @@ var Quote = require('../api/quote/quote.model');
 // 			}, function(err, quote) {
 // 				console.log(user);
 // 				console.log(lead);
-// 				console.log(ticket);
-// 				console.log(quote);
-// 			});
-// 		});
-// 	});
-// });
+// 	            console.log(quote);
+//          });
+//      });
+//  });
+// });			console.log(ticket);
+// 	
